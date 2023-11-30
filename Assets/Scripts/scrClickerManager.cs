@@ -10,6 +10,9 @@ public class scrClickerManager : MonoBehaviour
     public int costForce = 10;
     public int costAutoclick = 15;
     public TextMeshProUGUI score1Text;
+    public bool StateAutoclick = false;
+    public float cdAutoclick = 5;
+    public int forceAutoclick = 1;
 
 
     void Start()
@@ -22,7 +25,6 @@ public class scrClickerManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // Convertir la position de la souris en un rayon dans l'espace 2D
             Vector2 rayPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);
 
@@ -32,24 +34,44 @@ public class scrClickerManager : MonoBehaviour
                 if (hit.collider.gameObject.name == "Square")
                 {
                     score1 += score1Force;
-                    score1Text.text = score1.ToString();
+                    
                 }
                 else if (hit.collider.gameObject.name == "Upgrade" && score1 >= costForce)
                 {
                     score1Force += 0.1f;
                     score1 -= costForce;
                     costForce += 1;
-                    score1Text.text = score1.ToString();
                 }
                 else if (hit.collider.gameObject.name == "Autoclick" && score1 >= costAutoclick)
                 {
-                    // coroutine ici
+                    score1 -= costAutoclick;
+                    cdAutoclick *= 0.95f;
+                    // réduction délai coroutine ici
+                    if (!StateAutoclick)
+                    {
+                        StateAutoclick = true;
+                        StartCoroutine(CoroutineAutoclick());
+                    }
+                    
+                    
                 }
+                score1Text.text = score1.ToString();
             }
 
 
 
 
         }
+    }
+    public IEnumerator CoroutineAutoclick()
+    {
+        while (true)
+        {
+            score1 += forceAutoclick;
+            score1Text.text = score1.ToString();
+            yield return new WaitForSeconds(cdAutoclick);
+        }
+        
+        
     }
 }
