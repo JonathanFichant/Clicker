@@ -17,47 +17,57 @@ public class scrCanon1 : MonoBehaviour
     private bool circleDrag = false;
     private Vector2 dragOffset;
     public float angleCircle;
+    public float finalAngle;
 
     void Start()
     {
         forceCanon1 = 10f;
         baseAngle = 90f;
+        finalAngle = baseAngle;
         CreateCircle();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             CheckClickOnCircle();
         }
+        else circleDrag = false;
 
         if (circleDrag)
         {
             MoveCercleWithMouse();
         }
+        if (selected)
+        {
+            circleInstance.SetActive(true);
+        } // affichage cercle quand le canon est sélectionné
+        else
+        {
+            circleInstance.SetActive(false);
+        }
+
     }
 
 
     // note pour moi meme
     /*
      revoir anglecircle, baseangle, finalangle, voir ce qui est devenu inutile. différencier la création du cercle à la base et sa mise à jour. Déselectionner en cliquant ailleurs que sur le cercle.
-     
      */
 
-    public void OnMouseDown()
+    public void OnMouseDown() // sélection du canon, affichage cercle, création de souris
     {
         selected = true;
         
         // déselectionner tous les autres objets)
         // condition pour éviter clic trop rapproché
-        float finalAngle = Random.Range(baseAngle - 5f, baseAngle + 5f);
-        float angleInRadians = finalAngle * Mathf.Deg2Rad;
+        float randomAngle = Random.Range(finalAngle - 4f, finalAngle + 4f);
+        float angleInRadians = randomAngle * Mathf.Deg2Rad;
         float xx = Mathf.Cos(angleInRadians);
         float yy = Mathf.Sin(angleInRadians);
         
         createMouse(new Vector2(xx,yy),forceCanon1);
-        circleInstance.SetActive(true);
     }
 
     void createMouse(Vector2 direction, float speed)
@@ -66,19 +76,16 @@ public class scrCanon1 : MonoBehaviour
         GameObject mouse = Instantiate(mousePrefab, transform.position, transform.rotation);
         scrMouse mouseScript = mouse.GetComponent<scrMouse>();
         mouseScript.SetDirectionAndSpeed(direction, speed);
-    }
+    } // génération de souris
 
     void CreateCircle()
     {
+
         circleInstance = Instantiate(circleSelection, GetCirclePosition(), transform.rotation);
-        circleInstance.SetActive(false);
+        circleInstance.SetActive(false);   
 
-        //float angleInRadians = Mathf.Atan2(transform.up.y, transform.up.x);
-        //float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
-       
-
-    }
-    private Vector2 GetCirclePosition()
+    } // créé le cercle de sélection d'angle au start
+    private Vector2 GetCirclePosition() // détermine la position du cercle au start
     {
 
         float angleInRadians = baseAngle * Mathf.Deg2Rad;
@@ -100,7 +107,7 @@ public class scrCanon1 : MonoBehaviour
             circleDrag = true;
             dragOffset = (Vector2)circleInstance.transform.position - rayPos;
         }
-    }
+    } // détection du clic sur le cercle
 
     public void MoveCercleWithMouse()
     {
@@ -124,6 +131,6 @@ public class scrCanon1 : MonoBehaviour
 
         // Appliquer la rotation au canon en fonction de l'angle calculé
         transform.rotation = Quaternion.Euler(0, 0, angleInDegrees-90);
-        angleCircle = angleInDegrees-90;
+        finalAngle = angleInDegrees;
     }
 }
