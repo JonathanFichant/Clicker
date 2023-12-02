@@ -5,10 +5,13 @@ using UnityEngine;
 public class scrMouse : MonoBehaviour
 {
     public Rigidbody2D rbMouse;
+    public scrClickerManager scriptClickerManager;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        scriptClickerManager = FindObjectOfType<scrClickerManager>();
     }
 
     // Update is called once per frame
@@ -32,4 +35,21 @@ public class scrMouse : MonoBehaviour
         rbMouse.velocity = direction * speed;
        
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.name.Contains("Square"))
+        {
+            //fonction clic avec force du clic prise en compte
+            scriptClickerManager.Square(scriptClickerManager.forceMouse);
+            Destroy(gameObject);
+        }
+        else if (other.name.Contains("Upgrade"))
+        {
+            
+            scriptClickerManager.Upgrade();
+            Destroy(gameObject);
+        }
+    }
+
 }

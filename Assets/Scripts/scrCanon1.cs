@@ -50,17 +50,11 @@ public class scrCanon1 : MonoBehaviour
 
     }
 
-
-    // note pour moi meme
-    /*
-     revoir anglecircle, baseangle, finalangle, voir ce qui est devenu inutile. différencier la création du cercle à la base et sa mise à jour. Déselectionner en cliquant ailleurs que sur le cercle.
-     */
-
     public void OnMouseDown() // sélection du canon, affichage cercle, création de souris
     {
         selected = true;
         
-        // déselectionner tous les autres objets)
+        // déselectionner tous les autres canons
         // condition pour éviter clic trop rapproché
         float randomAngle = Random.Range(finalAngle - 4f, finalAngle + 4f);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
@@ -70,7 +64,7 @@ public class scrCanon1 : MonoBehaviour
         createMouse(new Vector2(xx,yy),forceCanon1);
     }
 
-    void createMouse(Vector2 direction, float speed)
+    public void createMouse(Vector2 direction, float speed)
     {
    
         GameObject mouse = Instantiate(mousePrefab, transform.position, transform.rotation);
