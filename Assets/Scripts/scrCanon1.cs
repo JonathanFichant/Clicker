@@ -8,7 +8,6 @@ using static Unity.VisualScripting.Member;
 public class scrCanon1 : MonoBehaviour
 {
     public GameObject mousePrefab;
-    public float forceCanon1;
     public float baseAngle;
     public bool selected = false;
     public GameObject circleSelection;
@@ -18,10 +17,10 @@ public class scrCanon1 : MonoBehaviour
     private Vector2 dragOffset;
     public float angleCircle;
     public float finalAngle;
+    public scrClickerManager scriptClickerManager;
 
     void Start()
     {
-        forceCanon1 = 10f;
         baseAngle = 90f;
         finalAngle = baseAngle;
         CreateCircle();
@@ -52,21 +51,19 @@ public class scrCanon1 : MonoBehaviour
 
     public void OnMouseDown() // sélection du canon, affichage cercle, création de souris
     {
-        selected = true;
         
         // déselectionner tous les autres canons
         // condition pour éviter clic trop rapproché
-        float randomAngle = Random.Range(finalAngle - 4f, finalAngle + 4f);
+        float randomAngle = Random.Range(finalAngle - scriptClickerManager.precision, finalAngle + scriptClickerManager.precision);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
         float xx = Mathf.Cos(angleInRadians);
-        float yy = Mathf.Sin(angleInRadians);
-        
-        createMouse(new Vector2(xx,yy),forceCanon1);
+        float yy = Mathf.Sin(angleInRadians);;
+        createMouse(new Vector2(xx,yy),scriptClickerManager.range);
+      
     }
 
     public void createMouse(Vector2 direction, float speed)
     {
-   
         GameObject mouse = Instantiate(mousePrefab, transform.position, transform.rotation);
         scrMouse mouseScript = mouse.GetComponent<scrMouse>();
         mouseScript.SetDirectionAndSpeed(direction, speed);
@@ -74,7 +71,6 @@ public class scrCanon1 : MonoBehaviour
 
     void CreateCircle()
     {
-
         circleInstance = Instantiate(circleSelection, GetCirclePosition(), transform.rotation);
         circleInstance.SetActive(false);   
 

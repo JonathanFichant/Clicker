@@ -38,10 +38,31 @@ public class scrMouse : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name.Contains("Square"))
+        if (other.gameObject.CompareTag("Target"))
         {
-            //fonction clic avec force du clic prise en compte
-            scriptClickerManager.Square(scriptClickerManager.forceMouse);
+            int forceSquare = 1;
+            if (other.name.Contains("Square2"))
+            {
+                forceSquare = 1024;
+            }
+            else if (other.name.Contains("Square3"))
+            {
+                forceSquare = 1024^2;
+            }
+            else if (other.name.Contains("Square4"))
+            {
+                forceSquare = 1024 ^ 3;
+            }
+            else if (other.name.Contains("Square5"))
+            {
+                forceSquare = 1024 ^ 4;
+            }
+            else if (other.name.Contains("Square6"))
+            {
+                forceSquare = 1024 ^ 5;
+            }
+            // vérifier quelle type de cible, selon la cible appliquer un multiplicateur à la force
+            scriptClickerManager.Square(scriptClickerManager.forceMouse*forceSquare);
             Destroy(gameObject);
         }
         else if (other.name.Contains("Upgrade"))
