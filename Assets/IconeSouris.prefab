@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8478316272433427043}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.37989274, w: -0.9250306}
-  m_LocalPosition: {x: 5.472, y: -4.066, z: 0}
+  m_LocalPosition: {x: 5.472, y: -4.066, z: 1}
   m_LocalScale: {x: 0.10753688, y: 0.10753688, z: 0.10753688}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5419488561c56ce4fa16766dbde26fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMouse: 1
   rbMouse: {fileID: 6048601551815158236}
   scriptClickerManager: {fileID: 0}
 --- !u!50 &6048601551815158236

@@ -13,7 +13,7 @@ public class scrClickerManager : MonoBehaviour
     public bool StateAutoclick = false;
     public float cdAutoMouse = 1;
     public int costRange = 15;
-    public float range = 8f; //13 max pour toucher le plus loin
+    public float range = 5f; //13 max pour toucher le plus loin
     public float precision = 70;
     public int costPrecision = 15;
     public scrCanon1 scriptCanon1;
@@ -22,7 +22,11 @@ public class scrClickerManager : MonoBehaviour
 
     void Start()
     {
-
+        precision = 70f;
+        range = 5f;
+        forceMouse = 1f;
+        cdAutoMouse = 2f;
+        DisplayScore();
     }
 
     void Update()
@@ -137,7 +141,17 @@ public class scrClickerManager : MonoBehaviour
     public void DisplayScore() // Affichage du score, arrondi à l'entier
     {
         int roundScore = (int)score1;
-        score1Text.text = "Octets infectés : " + roundScore.ToString("N0");
+        //score1Text.text = "Octets infectés : " + roundScore.ToString("N0");
+        score1Text.text =
+            "Range : " + range.ToString() +
+            "\nNext level : " + costRange.ToString("N0") + " o " +
+            "\n\nPrecision : " + precision.ToString() +
+            "\nNext level : " + costPrecision.ToString("N0") + " o " +
+            "\n\nCooldown : " + cdAutoMouse.ToString() + "s " +
+            "\nNext level : " + costAutoMouse.ToString("N0") + " o " +
+            "\n\nStrength : " + forceMouse.ToString() +
+            "\nNext level : " + costForce.ToString("N0") + " o " +
+            "\n\nInfected bytes : " + roundScore.ToString("N0");
     }
 
 }

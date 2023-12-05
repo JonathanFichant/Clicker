@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class scrMouse : MonoBehaviour
 {
@@ -47,19 +48,19 @@ public class scrMouse : MonoBehaviour
             }
             else if (other.name.Contains("Square3"))
             {
-                forceSquare = 1024^2;
+                forceSquare = (int)Math.Pow(1024, 2);
             }
             else if (other.name.Contains("Square4"))
             {
-                forceSquare = 1024 ^ 3;
+                forceSquare = (int)Math.Pow(1024, 3);
             }
             else if (other.name.Contains("Square5"))
             {
-                forceSquare = 1024 ^ 4;
+                forceSquare = (int)Math.Pow(1024, 4);
             }
             else if (other.name.Contains("Square6"))
             {
-                forceSquare = 1024 ^ 5;
+                forceSquare = (int)Math.Pow(1024, 5);
             }
             // vérifier quelle type de cible, selon la cible appliquer un multiplicateur à la force
             scriptClickerManager.Square(scriptClickerManager.forceMouse*forceSquare);
