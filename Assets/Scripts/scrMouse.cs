@@ -48,9 +48,9 @@ public class scrMouse : MonoBehaviour
             }
             else if (other.name.Contains("Square3"))
             {
-                forceSquare = (int)Math.Pow(1024, 2);
+                forceSquare = 1048576;
             }
-            else if (other.name.Contains("Square4"))
+            else if (other.name.Contains("Square4")) // Pas de square 4 5 6
             {
                 forceSquare = (int)Math.Pow(1024, 3);
             }
@@ -66,10 +66,24 @@ public class scrMouse : MonoBehaviour
             scriptClickerManager.Square(scriptClickerManager.forceMouse*forceSquare);
             Destroy(gameObject);
         }
-        else if (other.name.Contains("Upgrade"))
+        else if (other.name.Contains("Upgrade")) // force
         {
-            
             scriptClickerManager.Upgrade();
+            Destroy(gameObject);
+        }
+        else if (other.name.Contains("Autoclick")) // autoclick
+        {
+            scriptClickerManager.Autoclick();
+            Destroy(gameObject);
+        }
+        else if (other.name.Contains("Precision")) // precision
+        {
+            scriptClickerManager.Precision();
+            Destroy(gameObject);
+        }
+        else if (other.name.Contains("Range")) // range
+        {
+            scriptClickerManager.Range();
             Destroy(gameObject);
         }
     }

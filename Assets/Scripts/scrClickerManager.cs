@@ -5,8 +5,8 @@ using TMPro;
 
 public class scrClickerManager : MonoBehaviour
 {
-    public float score1 = 0;
-    public float forceMouse = 1;
+    public ulong score1 = 0;
+    public int forceMouse = 1;
     public int costForce = 10;
     public int costAutoMouse = 15;
     public TextMeshProUGUI score1Text;
@@ -17,6 +17,8 @@ public class scrClickerManager : MonoBehaviour
     public float precision = 70;
     public int costPrecision = 15;
     public scrCanon1 scriptCanon1;
+    public SpriteRenderer spriteRendererAutoclick;
+    public SpriteRenderer spriteRendererPrecision;
 
     // rajouter une variable qui augmante l'augmentation du prix
 
@@ -24,7 +26,7 @@ public class scrClickerManager : MonoBehaviour
     {
         precision = 70f;
         range = 5f;
-        forceMouse = 1f;
+        forceMouse = 1;
         cdAutoMouse = 2f;
         DisplayScore();
     }
@@ -48,22 +50,9 @@ public class scrClickerManager : MonoBehaviour
                 {
                     Upgrade();
                 }
-                else if (hit.collider.gameObject.name == "Autoclick" && score1 >= costAutoMouse && cdAutoMouse > 0.1f)
+                else if (hit.collider.gameObject.name == "Autoclick" && score1 >= (ulong)costAutoMouse && cdAutoMouse > 0.1f)
                 {
-                    score1 -= costAutoMouse;
-                    costAutoMouse += 15;
-                    DisplayScore();
-                    cdAutoMouse *= 0.95f;
-                    if (cdAutoMouse <= 0.1f)
-                    {
-                        cdAutoMouse = 0.1f;
-                        //afficher MAX et griser le bouton
-                    }
-                    if (!StateAutoclick)
-                    {
-                        StateAutoclick = true;
-                        StartCoroutine(CoroutineAutoclick());
-                    }
+                    Autoclick();
                 }
                 else if (hit.collider.gameObject.name == "Precision")
                 {
@@ -84,23 +73,23 @@ public class scrClickerManager : MonoBehaviour
     {
         while (true)
         {
-            Autoclick();
+            createMouse();
             yield return new WaitForSeconds(cdAutoMouse);
         }        
     }
 
-    public void Square(float force) // augmentation du score
+    public void Square(int force) // augmentation du score
     {
-        score1 += force;
+        score1 += (ulong)force;
         DisplayScore();
     }
 
     public void Upgrade()
     {
-        if (score1 >= costForce)
+        if (score1 >= (ulong)costForce)
         {
-            forceMouse += 1f;
-            score1 -= costForce;
+            forceMouse ++;
+            score1 -= (ulong)costForce;
             costForce += 5;
             DisplayScore();
         }
@@ -108,10 +97,9 @@ public class scrClickerManager : MonoBehaviour
 
     public void Range()
     {
-        if (score1 >= costRange)
+        if (score1 >= (ulong)costRange)
         {
-            
-            score1 -= costRange;
+            score1 -= (ulong)costRange;
             costRange += 5;
             range *= 1.005f;
             DisplayScore();
@@ -120,16 +108,21 @@ public class scrClickerManager : MonoBehaviour
 
     public void Precision()
     {
-        if (score1 >= costPrecision)
+        if (score1 >= (ulong)costPrecision && precision > 0.3f)
         {
-            score1 -= costPrecision;
+            score1 -= (ulong)costPrecision;
             costPrecision += 5;
-            DisplayScore();
             precision *= 0.97f;
+            DisplayScore();
+            if (precision <= 0.3f)
+            {
+                precision = 0f;
+                spriteRendererPrecision.color = Color.gray;
+            }
         }
     } // réduction de la marge aléatoire de l'angle de tir
 
-    public void Autoclick() // création auto de souris depuis le canon principal
+    public void createMouse() // création auto de souris depuis le canon principal
     {
         float randomAngle = Random.Range(scriptCanon1.finalAngle - precision, scriptCanon1.finalAngle + precision);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
@@ -138,20 +131,37 @@ public class scrClickerManager : MonoBehaviour
         scriptCanon1.createMouse(new Vector2(xx, yy), range);
     }
 
+    public void Autoclick()
+    {
+        score1 -= (ulong)costAutoMouse;
+        costAutoMouse += 10;
+        DisplayScore();
+        cdAutoMouse *= 0.95f;
+        if (cdAutoMouse <= 0.1f)
+        {
+            cdAutoMouse = 0.1f;
+            spriteRendererAutoclick.color = Color.gray;
+        }
+        if (!StateAutoclick)
+        {
+            StateAutoclick = true;
+            StartCoroutine(CoroutineAutoclick());
+        }
+    }
+
     public void DisplayScore() // Affichage du score, arrondi à l'entier
     {
-        int roundScore = (int)score1;
-        //score1Text.text = "Octets infectés : " + roundScore.ToString("N0");
+        float precisionDisplay = precision * 2;
         score1Text.text =
             "Range : " + range.ToString() +
             "\nNext level : " + costRange.ToString("N0") + " o " +
-            "\n\nPrecision : " + precision.ToString() +
+            "\n\nPrecision : " + precisionDisplay.ToString("F2") + " degrés" +
             "\nNext level : " + costPrecision.ToString("N0") + " o " +
-            "\n\nCooldown : " + cdAutoMouse.ToString() + "s " +
+            "\n\nCooldown : " + cdAutoMouse.ToString("F2") + "s " +
             "\nNext level : " + costAutoMouse.ToString("N0") + " o " +
-            "\n\nStrength : " + forceMouse.ToString() +
+            "\n\nStrength : " + forceMouse.ToString("N0") +
             "\nNext level : " + costForce.ToString("N0") + " o " +
-            "\n\nInfected bytes : " + roundScore.ToString("N0");
+            "\n\nInfected bytes : " + score1.ToString("N0");
     }
 
 }
