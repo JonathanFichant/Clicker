@@ -24,7 +24,7 @@ public class scrClickerManager : MonoBehaviour
 
     void Start()
     {
-        precision = 70f;
+        precision = 60f;
         range = 5f;
         forceMouse = 1;
         cdAutoMouse = 2f;
