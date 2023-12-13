@@ -8,14 +8,11 @@ public class scrMouse : MonoBehaviour
     public Rigidbody2D rbMouse;
     public scrClickerManager scriptClickerManager;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         scriptClickerManager = FindObjectOfType<scrClickerManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (rbMouse.velocity != Vector2.zero)
@@ -23,7 +20,6 @@ public class scrMouse : MonoBehaviour
             float angle = Mathf.Atan2(rbMouse.velocity.y, rbMouse.velocity.x) * Mathf.Rad2Deg;
             transform.eulerAngles = new Vector3(0, 0, angle - 90f);
         }
-
 
         if (transform.position.y < -6)
         {
@@ -62,6 +58,10 @@ public class scrMouse : MonoBehaviour
             {
                 forceSquare = (int)Math.Pow(1024, 5);
             }
+            else if (other.name.Contains("Pop-up"))
+            {
+                forceSquare = -10;
+            }
             // vérifier quelle type de cible, selon la cible appliquer un multiplicateur à la force
             scriptClickerManager.Square(scriptClickerManager.forceMouse*forceSquare);
             Destroy(gameObject);
@@ -87,5 +87,4 @@ public class scrMouse : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 }

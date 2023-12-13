@@ -19,8 +19,7 @@ public class scrClickerManager : MonoBehaviour
     public scrCanon1 scriptCanon1;
     public SpriteRenderer spriteRendererAutoclick;
     public SpriteRenderer spriteRendererPrecision;
-
-    // rajouter une variable qui augmante l'augmentation du prix
+    // rajouter une variable qui augmante l'augmentation du prix ?
 
     void Start()
     {
@@ -151,6 +150,16 @@ public class scrClickerManager : MonoBehaviour
 
     public void DisplayScore() // Affichage du score, arrondi à l'entier
     {
+        string score1Display;
+        // condiont à rajouter, si je m'apprete à descendre sous 0 alors 0.
+        if (score1 >= 137438953472)
+        {
+            score1Display = "100% !";
+        } // 128 Go
+        else
+        {
+            score1Display = score1.ToString("N0");
+        }
         float precisionDisplay = precision * 2;
         score1Text.text =
             "Range : " + range.ToString() +
@@ -161,7 +170,7 @@ public class scrClickerManager : MonoBehaviour
             "\nNext level : " + costAutoMouse.ToString("N0") + " o " +
             "\n\nStrength : " + forceMouse.ToString("N0") +
             "\nNext level : " + costForce.ToString("N0") + " o " +
-            "\n\nInfected bytes : " + score1.ToString("N0");
+            "\n\nInfected bytes : " + score1Display;
     }
 
 }

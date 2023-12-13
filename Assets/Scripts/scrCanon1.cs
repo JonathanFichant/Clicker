@@ -46,12 +46,10 @@ public class scrCanon1 : MonoBehaviour
         {
             circleInstance.SetActive(false);
         }
-
     }
 
     public void OnMouseDown() // sélection du canon, affichage cercle, création de souris
     {
-        
         // déselectionner tous les autres canons
         // condition pour éviter clic trop rapproché
         float randomAngle = Random.Range(finalAngle - scriptClickerManager.precision, finalAngle + scriptClickerManager.precision);
@@ -59,7 +57,6 @@ public class scrCanon1 : MonoBehaviour
         float xx = Mathf.Cos(angleInRadians);
         float yy = Mathf.Sin(angleInRadians);;
         createMouse(new Vector2(xx,yy),scriptClickerManager.range);
-      
     }
 
     public void createMouse(Vector2 direction, float speed)
@@ -77,13 +74,9 @@ public class scrCanon1 : MonoBehaviour
     } // créé le cercle de sélection d'angle au start
     private Vector2 GetCirclePosition() // détermine la position du cercle au start
     {
-
         float angleInRadians = baseAngle * Mathf.Deg2Rad;
-
-        // Calculer la position du cercle en fonction de l'angle et du rayon
-        float x = transform.position.x + radius * Mathf.Cos(angleInRadians);
+        float x = transform.position.x + radius * Mathf.Cos(angleInRadians); // Calculer la position du cercle en fonction de l'angle et du rayon
         float y = transform.position.y + radius * Mathf.Sin(angleInRadians);
-
         return new Vector2(x, y);
     }
 
@@ -110,8 +103,7 @@ public class scrCanon1 : MonoBehaviour
         Vector2 directionToCanon = newPosition - (Vector2)transform.position;
         newPosition = (Vector2)transform.position + directionToCanon.normalized * radius;
 
-        // Appliquer la nouvelle position au cercle
-        circleInstance.transform.position = newPosition;
+        circleInstance.transform.position = newPosition;  // Appliquer la nouvelle position au cercle
 
         // Calculer l'angle en radians en fonction de la nouvelle position du cercle
         float angleInRadians = Mathf.Atan2(directionToCanon.y, directionToCanon.x);
