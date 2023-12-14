@@ -19,7 +19,9 @@ public class scrClickerManager : MonoBehaviour
     public scrCanon1 scriptCanon1;
     public SpriteRenderer spriteRendererAutoclick;
     public SpriteRenderer spriteRendererPrecision;
-    // rajouter une variable qui augmante l'augmentation du prix ?
+    private bool PopUpActivate = false;
+    public GameObject PopupPrefab;
+    // rajouter une variable qui augmente l'augmentation du prix ?
 
     void Start()
     {
@@ -43,7 +45,7 @@ public class scrClickerManager : MonoBehaviour
                 if (hit.collider.gameObject.CompareTag("Target") && !(hit.collider.gameObject.name == "Pop-up"))
                 {
                     Square(1);  // le clic simple n'est pas le but du concept ici donc il est plus faible et décourageant
-                    
+
                 }
                 else if (hit.collider.gameObject.name == "Upgrade")
                 {
@@ -55,7 +57,7 @@ public class scrClickerManager : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.name == "Precision")
                 {
-                    Precision();                  
+                    Precision();
                 }
                 else if (hit.collider.gameObject.name == "Range")
                 {
@@ -74,7 +76,7 @@ public class scrClickerManager : MonoBehaviour
         {
             createMouse();
             yield return new WaitForSeconds(cdAutoMouse);
-        }        
+        }
     }
 
     public void Square(int force) // augmentation du score
@@ -97,13 +99,26 @@ public class scrClickerManager : MonoBehaviour
         }
         DisplayScore();
 
+        if (!PopUpActivate && score1 > 100)
+        {
+            PopUpActivate = true;
+            StartCoroutine(CoroutinePopUp());
+        }
+    }
+    public IEnumerator CoroutinePopUp() // création de pop up régulièrement
+    {
+        while (true)
+        {
+            CreatePopup();
+            yield return new WaitForSeconds(Random.Range(30,60));
+        }
     }
 
     public void Upgrade()
     {
         if (score1 >= (ulong)costForce)
         {
-            forceMouse ++;
+            forceMouse++;
             score1 -= (ulong)costForce;
             costForce += 5;
             DisplayScore();
@@ -186,6 +201,13 @@ public class scrClickerManager : MonoBehaviour
             "\n\nStrength : " + forceMouse.ToString("N0") +
             "\nNext level : " + costForce.ToString("N0") + " o " +
             "\n\nInfected bytes : " + score1Display;
+    }
+
+    public void CreatePopup() // création de popup
+    {
+        float randomX = Random.Range(-4f, 4f);
+        float randomY = Random.Range(0.5f, 3f);
+        Instantiate(PopupPrefab, new Vector2(randomX,randomY), transform.rotation);
     }
 
 }
