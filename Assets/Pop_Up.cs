@@ -13,7 +13,7 @@ public class Pop_Up : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // zone de 0.4f sur 0.4f
+        if (Input.GetMouseButtonDown(0)) // zone de 0.2f sur 0.2f
         {
             Vector2 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             if (clickPosition.x >= (transform.position.x + colliderPopUp.size.x / 2f) -0.2f && //
@@ -23,8 +23,6 @@ public class Pop_Up : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-        }
-
-
+        } // vérif si clic sur le coin du pop up
     }
 }

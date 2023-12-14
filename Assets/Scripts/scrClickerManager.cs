@@ -40,7 +40,7 @@ public class scrClickerManager : MonoBehaviour
             // Vérifier s'il y a une collision avec un objet
             if (hit.collider != null)
             {
-                if (hit.collider.gameObject.CompareTag("Target"))
+                if (hit.collider.gameObject.CompareTag("Target") && !(hit.collider.gameObject.name == "Pop-up"))
                 {
                     Square(1);  // le clic simple n'est pas le but du concept ici donc il est plus faible et décourageant
                     
@@ -79,8 +79,24 @@ public class scrClickerManager : MonoBehaviour
 
     public void Square(int force) // augmentation du score
     {
-        score1 += (ulong)force;
+        if (force < 0)
+        {
+            int force1 = -force;
+            if (score1 <= (ulong)force1)
+            {
+                score1 = 0;
+            }
+            else
+            {
+                score1 += (ulong)force;
+            }
+        }
+        else
+        {
+            score1 += (ulong)force;
+        }
         DisplayScore();
+
     }
 
     public void Upgrade()
@@ -151,7 +167,6 @@ public class scrClickerManager : MonoBehaviour
     public void DisplayScore() // Affichage du score, arrondi à l'entier
     {
         string score1Display;
-        // condiont à rajouter, si je m'apprete à descendre sous 0 alors 0.
         if (score1 >= 137438953472)
         {
             score1Display = "100% !";
