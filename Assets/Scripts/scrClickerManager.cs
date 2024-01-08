@@ -22,10 +22,6 @@ public class scrClickerManager : MonoBehaviour
     private bool PopUpActivate = false;
     public GameObject PopupPrefab;
     public GameObject SquareSelection;
-    private float maxScale = 1.2f;
-    //private float minScale = 0.8f;
-    private float clickDuration = 0.9f;
-    private bool bounceActive = false;
     // rajouter une variable qui augmente l'augmentation du prix ?
 
     void Start()
@@ -45,20 +41,15 @@ public class scrClickerManager : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);
 
             // Vérifier s'il y a une collision avec un objet
-            if (hit.collider != null)
+            if (hit.collider != null && hit.collider.gameObject.name != "CircleSelection")
             {
                 SquareSelection.transform.position = hit.collider.transform.position;
-
-                // juice du clic
-
-                bounceActive = true;
-                BounceIcon(hit.collider);
-
+                //BounceIcon bounceIcon = hit.collider.GetComponent<BounceIcon>();
+                //bounceIcon.bounceActive = true;
 
                 if (hit.collider.gameObject.CompareTag("Target") && !(hit.collider.gameObject.name == "Pop-up"))
                 {
                     Square(1);  // le clic simple n'est pas le but du concept ici donc il est plus faible et décourageant
-
                 }
                 else if (hit.collider.gameObject.name == "Upgrade")
                 {
@@ -81,9 +72,10 @@ public class scrClickerManager : MonoBehaviour
                     scriptCanon1.selected = true;
                 }
             }
-
-
-
+            else
+            {
+                SquareSelection.transform.position = new Vector2(-4, -8);
+            }
         }
     }
     public IEnumerator CoroutineAutoclick() // création de mouse automatique selon un cooldown
@@ -226,12 +218,5 @@ public class scrClickerManager : MonoBehaviour
         Instantiate(PopupPrefab, new Vector2(randomX,randomY), transform.rotation);
     }
 
-    public void BounceIcon(Collider2D Icon)
-    {
-        Vector3 originalScale = Icon.transform.localScale;
-        float clickTime = Mathf.PingPong(Time.time / clickDuration, 1);
-        float scaleMultiplier = 1 + Mathf.Sin(clickTime * Mathf.PI) * (maxScale - 1);
-        Icon.transform.localScale = originalScale * scaleMultiplier;
-        Debug.Log("test");
-    }
+   
 }
