@@ -21,6 +21,11 @@ public class scrClickerManager : MonoBehaviour
     public SpriteRenderer spriteRendererPrecision;
     private bool PopUpActivate = false;
     public GameObject PopupPrefab;
+    public GameObject SquareSelection;
+    private float maxScale = 1.2f;
+    //private float minScale = 0.8f;
+    private float clickDuration = 0.9f;
+    private bool bounceActive = false;
     // rajouter une variable qui augmente l'augmentation du prix ?
 
     void Start()
@@ -42,6 +47,14 @@ public class scrClickerManager : MonoBehaviour
             // Vérifier s'il y a une collision avec un objet
             if (hit.collider != null)
             {
+                SquareSelection.transform.position = hit.collider.transform.position;
+
+                // juice du clic
+
+                bounceActive = true;
+                BounceIcon(hit.collider);
+
+
                 if (hit.collider.gameObject.CompareTag("Target") && !(hit.collider.gameObject.name == "Pop-up"))
                 {
                     Square(1);  // le clic simple n'est pas le but du concept ici donc il est plus faible et décourageant
@@ -68,7 +81,10 @@ public class scrClickerManager : MonoBehaviour
                     scriptCanon1.selected = true;
                 }
             }
-        } // détection du bouton cliqué
+
+
+
+        }
     }
     public IEnumerator CoroutineAutoclick() // création de mouse automatique selon un cooldown
     {
@@ -210,4 +226,12 @@ public class scrClickerManager : MonoBehaviour
         Instantiate(PopupPrefab, new Vector2(randomX,randomY), transform.rotation);
     }
 
+    public void BounceIcon(Collider2D Icon)
+    {
+        Vector3 originalScale = Icon.transform.localScale;
+        float clickTime = Mathf.PingPong(Time.time / clickDuration, 1);
+        float scaleMultiplier = 1 + Mathf.Sin(clickTime * Mathf.PI) * (maxScale - 1);
+        Icon.transform.localScale = originalScale * scaleMultiplier;
+        Debug.Log("test");
+    }
 }
