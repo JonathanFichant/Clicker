@@ -34,7 +34,6 @@ public class BounceIcon : MonoBehaviour
             transform.localScale = originalScale;
             countdownTimer = clickDuration;
         }
-
     }
 }
 

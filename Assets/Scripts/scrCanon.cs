@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
 
-public class scrCanon1 : MonoBehaviour
+public class scrCanon : MonoBehaviour
 {
     public GameObject mousePrefab;
     public float baseAngle;
@@ -38,6 +37,7 @@ public class scrCanon1 : MonoBehaviour
         {
             MoveCercleWithMouse();
         }
+
         if (selected)
         {
             circleInstance.SetActive(true);
@@ -50,7 +50,6 @@ public class scrCanon1 : MonoBehaviour
 
     public void OnMouseDown() // sélection du canon, affichage cercle, création de souris
     {
-        // déselectionner tous les autres canons
         // condition pour éviter clic trop rapproché
         float randomAngle = Random.Range(finalAngle - scriptClickerManager.precision, finalAngle + scriptClickerManager.precision);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
@@ -59,19 +58,19 @@ public class scrCanon1 : MonoBehaviour
         createMouse(new Vector2(xx,yy),scriptClickerManager.range);
     }
 
-    public void createMouse(Vector2 direction, float speed)
+    public void createMouse(Vector2 direction, float speed) // génération de souris
     {
         GameObject mouse = Instantiate(mousePrefab, transform.position, transform.rotation);
         scrMouse mouseScript = mouse.GetComponent<scrMouse>();
         mouseScript.SetDirectionAndSpeed(direction, speed);
-    } // génération de souris
+    }
 
-    void CreateCircle()
+    void CreateCircle() // création du cercle de sélection d'angle
     {
         circleInstance = Instantiate(circleSelection, GetCirclePosition(), transform.rotation);
         circleInstance.SetActive(false);   
+    }
 
-    } // créé le cercle de sélection d'angle au start
     private Vector2 GetCirclePosition() // détermine la position du cercle au start
     {
         float angleInRadians = baseAngle * Mathf.Deg2Rad;
@@ -80,7 +79,7 @@ public class scrCanon1 : MonoBehaviour
         return new Vector2(x, y);
     }
 
-    private void CheckClickOnCircle()
+    private void CheckClickOnCircle() // détection du clic sur le cercle
     {
         Vector2 rayPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);
@@ -90,9 +89,9 @@ public class scrCanon1 : MonoBehaviour
             circleDrag = true;
             dragOffset = (Vector2)circleInstance.transform.position - rayPos;
         }
-    } // détection du clic sur le cercle
+    }
 
-    public void MoveCercleWithMouse()
+    public void MoveCercleWithMouse() 
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 

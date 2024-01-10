@@ -10,18 +10,18 @@ public class scrClickerManager : MonoBehaviour
     public int costForce = 10;
     public int costAutoMouse = 15;
     public TextMeshProUGUI score1Text;
-    public bool StateAutoclick = false;
+    public bool stateAutoclick = false;
     public float cdAutoMouse = 1;
     public int costRange = 15;
     public float range = 5f; //13 max pour toucher le plus loin
     public float precision = 70;
     public int costPrecision = 15;
-    public scrCanon1 scriptCanon1;
+    public scrCanon scriptCanon;
     public SpriteRenderer spriteRendererAutoclick;
     public SpriteRenderer spriteRendererPrecision;
-    private bool PopUpActivate = false;
-    public GameObject PopupPrefab;
-    public GameObject SquareSelection;
+    private bool popUpActivate = false;
+    public GameObject popupPrefab;
+    public GameObject squareSelection;
     // rajouter une variable qui augmente l'augmentation du prix ?
 
     void Start()
@@ -43,7 +43,7 @@ public class scrClickerManager : MonoBehaviour
             // Vérifier s'il y a une collision avec un objet
             if (hit.collider != null && hit.collider.gameObject.name != "CircleSelection")
             {
-                SquareSelection.transform.position = hit.collider.transform.position;
+                squareSelection.transform.position = hit.collider.transform.position;
                 //BounceIcon bounceIcon = hit.collider.GetComponent<BounceIcon>();
                 //bounceIcon.bounceActive = true;
 
@@ -67,14 +67,14 @@ public class scrClickerManager : MonoBehaviour
                 {
                     Range();
                 }
-                else if (hit.collider.gameObject.name == "Canon1")
+                else if (hit.collider.gameObject.name == "Canon")
                 {
-                    scriptCanon1.selected = true;
+                    scriptCanon.selected = true;
                 }
             }
             else
             {
-                SquareSelection.transform.position = new Vector2(-4, -8);
+                squareSelection.transform.position = new Vector2(-4, -8);
             }
         }
     }
@@ -107,9 +107,9 @@ public class scrClickerManager : MonoBehaviour
         }
         DisplayScore();
 
-        if (!PopUpActivate && score1 > 100)
+        if (!popUpActivate && score1 > 100)
         {
-            PopUpActivate = true;
+            popUpActivate = true;
             StartCoroutine(CoroutinePopUp());
         }
     }
@@ -162,11 +162,11 @@ public class scrClickerManager : MonoBehaviour
 
     public void createMouse() // création auto de souris depuis le canon principal
     {
-        float randomAngle = Random.Range(scriptCanon1.finalAngle - precision, scriptCanon1.finalAngle + precision);
+        float randomAngle = Random.Range(scriptCanon.finalAngle - precision, scriptCanon.finalAngle + precision);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
         float xx = Mathf.Cos(angleInRadians);
         float yy = Mathf.Sin(angleInRadians);
-        scriptCanon1.createMouse(new Vector2(xx, yy), range);
+        scriptCanon.createMouse(new Vector2(xx, yy), range);
     }
 
     public void Autoclick()
@@ -180,9 +180,9 @@ public class scrClickerManager : MonoBehaviour
             cdAutoMouse = 0.1f;
             spriteRendererAutoclick.color = Color.gray;
         }
-        if (!StateAutoclick)
+        if (!stateAutoclick)
         {
-            StateAutoclick = true;
+            stateAutoclick = true;
             StartCoroutine(CoroutineAutoclick());
         }
     }
@@ -215,8 +215,6 @@ public class scrClickerManager : MonoBehaviour
     {
         float randomX = Random.Range(-4f, 4f);
         float randomY = Random.Range(0.5f, 3f);
-        Instantiate(PopupPrefab, new Vector2(randomX,randomY), transform.rotation);
+        Instantiate(popupPrefab, new Vector2(randomX,randomY), transform.rotation);
     }
-
-   
 }
