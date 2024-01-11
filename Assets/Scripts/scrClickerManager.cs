@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Burst.CompilerServices;
 
 public class scrClickerManager : MonoBehaviour
 {
-    public ulong score1 = 0;
+    public ulong score = 0;
     public int forceMouse = 1;
     public int costForce = 10;
     public int costAutoMouse = 15;
-    public TextMeshProUGUI score1Text;
+    public TextMeshProUGUI scoreText;
     public bool stateAutoclick = false;
     public float cdAutoMouse = 1;
     public int costRange = 15;
@@ -44,9 +45,13 @@ public class scrClickerManager : MonoBehaviour
             if (hit.collider != null && hit.collider.gameObject.name != "CircleSelection")
             {
                 squareSelection.transform.position = hit.collider.transform.position;
-                //BounceIcon bounceIcon = hit.collider.GetComponent<BounceIcon>();
-                //bounceIcon.bounceActive = true;
 
+                Animator animator = hit.collider.gameObject.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.Play("Bounce", 0, 0f);
+                }
+                
                 if (hit.collider.gameObject.CompareTag("Target") && !(hit.collider.gameObject.name == "Pop-up"))
                 {
                     Square(1);  // le clic simple n'est pas le but du concept ici donc il est plus faible et décourageant
@@ -55,7 +60,7 @@ public class scrClickerManager : MonoBehaviour
                 {
                     Upgrade();
                 }
-                else if (hit.collider.gameObject.name == "Autoclick" && score1 >= (ulong)costAutoMouse && cdAutoMouse > 0.1f)
+                else if (hit.collider.gameObject.name == "Autoclick" && score >= (ulong)costAutoMouse && cdAutoMouse > 0.1f)
                 {
                     Autoclick();
                 }
@@ -66,10 +71,6 @@ public class scrClickerManager : MonoBehaviour
                 else if (hit.collider.gameObject.name == "Range")
                 {
                     Range();
-                }
-                else if (hit.collider.gameObject.name == "Canon")
-                {
-                    scriptCanon.selected = true;
                 }
             }
             else
@@ -92,22 +93,22 @@ public class scrClickerManager : MonoBehaviour
         if (force < 0)
         {
             int force1 = -force;
-            if (score1 <= (ulong)force1)
+            if (score <= (ulong)force1)
             {
-                score1 = 0;
+                score = 0;
             }
             else
             {
-                score1 += (ulong)force;
+                score += (ulong)force;
             }
         }
         else
         {
-            score1 += (ulong)force;
+            score += (ulong)force;
         }
         DisplayScore();
 
-        if (!popUpActivate && score1 > 100)
+        if (!popUpActivate && score > 100)
         {
             popUpActivate = true;
             StartCoroutine(CoroutinePopUp());
@@ -124,10 +125,10 @@ public class scrClickerManager : MonoBehaviour
 
     public void Upgrade()
     {
-        if (score1 >= (ulong)costForce)
+        if (score >= (ulong)costForce)
         {
             forceMouse++;
-            score1 -= (ulong)costForce;
+            score -= (ulong)costForce;
             costForce += 5;
             DisplayScore();
         }
@@ -135,20 +136,21 @@ public class scrClickerManager : MonoBehaviour
 
     public void Range()
     {
-        if (score1 >= (ulong)costRange)
+        if (score >= (ulong)costRange)
         {
-            score1 -= (ulong)costRange;
+            score -= (ulong)costRange;
             costRange += 5;
             range *= 1.005f;
             DisplayScore();
+
         }
     } // augmentation de la poussée initiale des mouses
 
     public void Precision()
     {
-        if (score1 >= (ulong)costPrecision && precision > 0.3f)
+        if (score >= (ulong)costPrecision && precision > 0.3f)
         {
-            score1 -= (ulong)costPrecision;
+            score -= (ulong)costPrecision;
             costPrecision += 5;
             precision *= 0.97f;
             DisplayScore();
@@ -171,10 +173,10 @@ public class scrClickerManager : MonoBehaviour
 
     public void Autoclick()
     {
-        score1 -= (ulong)costAutoMouse;
+        score -= (ulong)costAutoMouse;
         costAutoMouse += 10;
-        DisplayScore();
         cdAutoMouse *= 0.95f;
+        DisplayScore();
         if (cdAutoMouse <= 0.1f)
         {
             cdAutoMouse = 0.1f;
@@ -189,17 +191,17 @@ public class scrClickerManager : MonoBehaviour
 
     public void DisplayScore() // Affichage du score, arrondi à l'entier
     {
-        string score1Display;
-        if (score1 >= 137438953472)
+        string scoreDisplay;
+        if (score >= 137438953472) //128go
         {
-            score1Display = "100% !";
-        } // 128 Go
+            scoreDisplay = "100% !";
+        }
         else
         {
-            score1Display = score1.ToString("N0");
+            scoreDisplay = score.ToString("N0");
         }
         float precisionDisplay = precision * 2;
-        score1Text.text =
+        scoreText.text =
             "Range : " + range.ToString() +
             "\nNext level : " + costRange.ToString("N0") + " o " +
             "\n\nPrecision : " + precisionDisplay.ToString("F2") + " degrés" +
@@ -208,7 +210,7 @@ public class scrClickerManager : MonoBehaviour
             "\nNext level : " + costAutoMouse.ToString("N0") + " o " +
             "\n\nStrength : " + forceMouse.ToString("N0") +
             "\nNext level : " + costForce.ToString("N0") + " o " +
-            "\n\nInfected bytes : " + score1Display;
+            "\n\nInfected bytes : " + scoreDisplay;
     }
 
     public void CreatePopup() // création de popup

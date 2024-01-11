@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Burst.CompilerServices;
 
 public class scrMouse : MonoBehaviour
 {
@@ -35,6 +36,12 @@ public class scrMouse : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Animator animator = other.GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.Play("Bounce", 0, 0f);
+        }
+
         if (other.gameObject.CompareTag("Target"))
         {
             int forceSquare = 1;

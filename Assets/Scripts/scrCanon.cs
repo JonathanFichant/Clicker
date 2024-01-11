@@ -8,9 +8,7 @@ public class scrCanon : MonoBehaviour
 {
     public GameObject mousePrefab;
     public float baseAngle;
-    public bool selected = false;
     public GameObject circleSelection;
-    private GameObject circleInstance;
     public float radius = 3f;
     private bool circleDrag = false;
     private Vector2 dragOffset;
@@ -37,20 +35,11 @@ public class scrCanon : MonoBehaviour
         {
             MoveCercleWithMouse();
         }
-
-        if (selected)
-        {
-            circleInstance.SetActive(true);
-        } // affichage cercle quand le canon est sélectionné
-        else
-        {
-            circleInstance.SetActive(false);
-        }
     }
 
-    public void OnMouseDown() // sélection du canon, affichage cercle, création de souris
+    public void OnMouseDown() // création de souris
     {
-        // condition pour éviter clic trop rapproché
+        // condition pour éviter clic trop rapproché ?
         float randomAngle = Random.Range(finalAngle - scriptClickerManager.precision, finalAngle + scriptClickerManager.precision);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
         float xx = Mathf.Cos(angleInRadians);
@@ -67,8 +56,8 @@ public class scrCanon : MonoBehaviour
 
     void CreateCircle() // création du cercle de sélection d'angle
     {
-        circleInstance = Instantiate(circleSelection, GetCirclePosition(), transform.rotation);
-        circleInstance.SetActive(false);   
+        //circleInstance = Instantiate(circleSelection, GetCirclePosition(), transform.rotation);
+        circleSelection.transform.position = GetCirclePosition();
     }
 
     private Vector2 GetCirclePosition() // détermine la position du cercle au start
@@ -84,10 +73,10 @@ public class scrCanon : MonoBehaviour
         Vector2 rayPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);
 
-        if (hit.collider != null && hit.collider.gameObject == circleInstance)
+        if (hit.collider != null && hit.collider.gameObject == circleSelection)
         {
             circleDrag = true;
-            dragOffset = (Vector2)circleInstance.transform.position - rayPos;
+            dragOffset = (Vector2)circleSelection.transform.position - rayPos;
         }
     }
 
@@ -102,7 +91,7 @@ public class scrCanon : MonoBehaviour
         Vector2 directionToCanon = newPosition - (Vector2)transform.position;
         newPosition = (Vector2)transform.position + directionToCanon.normalized * radius;
 
-        circleInstance.transform.position = newPosition;  // Appliquer la nouvelle position au cercle
+        circleSelection.transform.position = newPosition;  // Appliquer la nouvelle position au cercle
 
         // Calculer l'angle en radians en fonction de la nouvelle position du cercle
         float angleInRadians = Mathf.Atan2(directionToCanon.y, directionToCanon.x);
