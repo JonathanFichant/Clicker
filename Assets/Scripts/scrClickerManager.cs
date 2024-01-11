@@ -23,6 +23,7 @@ public class scrClickerManager : MonoBehaviour
     private bool popUpActivate = false;
     public GameObject popupPrefab;
     public GameObject squareSelection;
+    public AudioSource audioSource;
     // rajouter une variable qui augmente l'augmentation du prix ?
 
     void Start()
@@ -42,7 +43,7 @@ public class scrClickerManager : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);
 
             // Vérifier s'il y a une collision avec un objet
-            if (hit.collider != null && hit.collider.gameObject.name != "CircleSelection")
+            if (hit.collider != null && hit.collider.gameObject.name != "CircleSelection" && !hit.collider.gameObject.CompareTag("Antivirus"))
             {
                 squareSelection.transform.position = hit.collider.transform.position;
 
@@ -218,5 +219,6 @@ public class scrClickerManager : MonoBehaviour
         float randomX = Random.Range(-4f, 4f);
         float randomY = Random.Range(0.5f, 3f);
         Instantiate(popupPrefab, new Vector2(randomX,randomY), transform.rotation);
+        audioSource.Play();
     }
 }
