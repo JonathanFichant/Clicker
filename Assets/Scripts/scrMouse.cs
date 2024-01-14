@@ -36,49 +36,50 @@ public class scrMouse : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Animator animator = other.GetComponent<Animator>();
-        if (animator != null)
+        if (!other.name.Contains("Canon") && !other.name.Contains("CircleSelection"))
         {
-            animator.Play("Bounce", 0, 0f);
-        }
+            Animator animator = other.GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.Play("Bounce", 0, 0f);
+            }
 
-        if (other.gameObject.CompareTag("Target"))
-        {
-            int forceSquare = 1;
-            if (other.name.Contains("Square2"))
+
+            if (other.gameObject.CompareTag("Target"))
             {
-                forceSquare = 1024;
+                int forceSquare = 1;
+                if (other.name.Contains("Square2"))
+                {
+                    forceSquare = 1024;
+                }
+                else if (other.name.Contains("Square3"))
+                {
+                    forceSquare = 1048576;
+                }
+                else if (other.name.Contains("Pop-up"))
+                {
+                    forceSquare = -10;
+                }
+                // vérifier quelle type de cible, selon la cible appliquer un multiplicateur à la force
+                scriptClickerManager.Square(scriptClickerManager.forceMouse * forceSquare);
             }
-            else if (other.name.Contains("Square3"))
+            else if (other.name.Contains("Upgrade")) // force
             {
-                forceSquare = 1048576;
+                scriptClickerManager.Upgrade();
             }
-            else if (other.name.Contains("Pop-up"))
+            else if (other.name.Contains("Autoclick")) // autoclick
             {
-                forceSquare = -10;
+                scriptClickerManager.Autoclick();
             }
-            // vérifier quelle type de cible, selon la cible appliquer un multiplicateur à la force
-            scriptClickerManager.Square(scriptClickerManager.forceMouse*forceSquare);
-            Destroy(gameObject);
-        }
-        else if (other.name.Contains("Upgrade")) // force
-        {
-            scriptClickerManager.Upgrade();
-            Destroy(gameObject);
-        }
-        else if (other.name.Contains("Autoclick")) // autoclick
-        {
-            scriptClickerManager.Autoclick();
-            Destroy(gameObject);
-        }
-        else if (other.name.Contains("Precision")) // precision
-        {
-            scriptClickerManager.Precision();
-            Destroy(gameObject);
-        }
-        else if (other.name.Contains("Range")) // range
-        {
-            scriptClickerManager.Range();
+            else if (other.name.Contains("Precision")) // precision
+            {
+                scriptClickerManager.Precision();
+            }
+            else if (other.name.Contains("Range")) // range
+            {
+                scriptClickerManager.Range();
+            }
+            //scriptClickerManager.PlaySoundClick();
             Destroy(gameObject);
         }
     }

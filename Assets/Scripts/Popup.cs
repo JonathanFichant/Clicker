@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pop_Up : MonoBehaviour
+public class Popup : MonoBehaviour
 {
     public BoxCollider2D colliderPopUp;
 

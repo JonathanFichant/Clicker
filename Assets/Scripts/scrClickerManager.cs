@@ -24,6 +24,9 @@ public class scrClickerManager : MonoBehaviour
     public GameObject popupPrefab;
     public GameObject squareSelection;
     public AudioSource audioSource;
+    public AudioClip soundAntivirus;
+    public AudioClip soundClick;
+
     // rajouter une variable qui augmente l'augmentation du prix ?
 
     void Start()
@@ -73,6 +76,7 @@ public class scrClickerManager : MonoBehaviour
                 {
                     Range();
                 }
+                PlaySoundClick();
             }
             else
             {
@@ -219,6 +223,13 @@ public class scrClickerManager : MonoBehaviour
         float randomX = Random.Range(-4f, 4f);
         float randomY = Random.Range(0.5f, 3f);
         Instantiate(popupPrefab, new Vector2(randomX,randomY), transform.rotation);
-        audioSource.Play();
+        audioSource.volume = 0.7f;
+        audioSource.PlayOneShot(soundAntivirus);
+    }
+
+    public void PlaySoundClick()
+    {
+        audioSource.volume = 0.2f;
+        audioSource.PlayOneShot(soundClick);
     }
 }

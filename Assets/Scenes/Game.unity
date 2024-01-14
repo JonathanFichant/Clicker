@@ -2025,11 +2025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5746d8ef36a7f9f46b091ca13cfeedd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxScale: 1.2
-  clickDuration: 0.9
-  bounceActive: 0
-  countdownTimer: 0
-  originalScale: {x: 0, y: 0, z: 0}
 --- !u!95 &1417044026
 Animator:
   serializedVersion: 5
@@ -2450,6 +2445,8 @@ MonoBehaviour:
   popupPrefab: {fileID: 8514479210855597094, guid: 2cba6fe57d09e8a429031d86eaee959d, type: 3}
   squareSelection: {fileID: 541209353}
   audioSource: {fileID: 1789707434}
+  soundAntivirus: {fileID: 8300000, guid: 6a0e1a951d9e8694e9da3243719f0946, type: 3}
+  soundClick: {fileID: 8300000, guid: b98a97baaa2651a4f9b9fc7b36651917, type: 3}
 --- !u!4 &1789707433
 Transform:
   m_ObjectHideFlags: 0
