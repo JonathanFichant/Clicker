@@ -145,9 +145,8 @@ public class scrClickerManager : MonoBehaviour
         {
             score -= (ulong)costRange;
             costRange += 5;
-            range *= 1.005f;
+            range *= 1.007f;
             DisplayScore();
-
         }
     } // augmentation de la poussée initiale des mouses
 
@@ -157,7 +156,7 @@ public class scrClickerManager : MonoBehaviour
         {
             score -= (ulong)costPrecision;
             costPrecision += 5;
-            precision *= 0.97f;
+            precision *= 0.95f;
             DisplayScore();
             if (precision <= 0.3f)
             {
@@ -167,7 +166,7 @@ public class scrClickerManager : MonoBehaviour
         }
     } // réduction de la marge aléatoire de l'angle de tir
 
-    public void createMouse() // création auto de souris depuis le canon principal
+    public void createMouse() // création auto de souris depuis le canon
     {
         float randomAngle = Random.Range(scriptCanon.finalAngle - precision, scriptCanon.finalAngle + precision);
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
