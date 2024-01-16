@@ -13,7 +13,7 @@ public class scrClickerManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public bool stateAutoclick = false;
     public float cdAutoMouse = 1;
-    public int costRange = 15;
+    public float costRange = 15f;
     public float range = 5f; //13 max pour toucher le plus loin
     public float precision = 70;
     public int costPrecision = 15;
@@ -144,8 +144,8 @@ public class scrClickerManager : MonoBehaviour
         if (score >= (ulong)costRange)
         {
             score -= (ulong)costRange;
-            costRange += 5;
-            range *= 1.007f;
+            costRange *= 1.1f;
+            range *= 1.01f;
             DisplayScore();
         }
     } // augmentation de la poussée initiale des mouses

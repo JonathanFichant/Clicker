@@ -36,7 +36,7 @@ public class scrMouse : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.name.Contains("Canon") && !other.name.Contains("CircleSelection"))
+        if (!other.name.Contains("Canon") && !other.name.Contains("CircleSelection") && !other.name.Contains("IconeSouris"))
         {
             Animator animator = other.GetComponent<Animator>();
             if (animator != null)
@@ -45,7 +45,7 @@ public class scrMouse : MonoBehaviour
             }
 
 
-            if (other.gameObject.CompareTag("Target"))
+            if (other.gameObject.CompareTag("Target") || other.gameObject.CompareTag("Antivirus"))
             {
                 int forceSquare = 1;
                 if (other.name.Contains("Square2"))
@@ -54,7 +54,7 @@ public class scrMouse : MonoBehaviour
                 }
                 else if (other.name.Contains("Square3"))
                 {
-                    forceSquare = 1048576;
+                    forceSquare = 1048576; // 1024 * 1024
                 }
                 else if (other.name.Contains("Pop-up"))
                 {
@@ -79,7 +79,6 @@ public class scrMouse : MonoBehaviour
             {
                 scriptClickerManager.Range();
             }
-            //scriptClickerManager.PlaySoundClick();
             Destroy(gameObject);
         }
     }
