@@ -11,18 +11,20 @@ public class scrClickerManager : MonoBehaviour
     public int costForce = 10;
     public int costAutoMouse = 15;
     public TextMeshProUGUI scoreText;
-    public bool stateAutoclick = false;
+    private bool stateAutoclick = false;
     public float cdAutoMouse = 1;
     public float costRange = 15f;
     public float range = 5f; //13 max pour toucher le plus loin
     public float precision = 70;
     public int costPrecision = 15;
+
     public scrCanon scriptCanon;
     public SpriteRenderer spriteRendererAutoclick;
     public SpriteRenderer spriteRendererPrecision;
     private bool popUpActivate = false;
     public GameObject popupPrefab;
     public GameObject squareSelection;
+
     public AudioSource audioSource;
     public AudioClip soundAntivirus;
     public AudioClip soundClick;
@@ -40,6 +42,9 @@ public class scrClickerManager : MonoBehaviour
 
     void Update()
     {
+
+
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 rayPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -199,6 +204,7 @@ public class scrClickerManager : MonoBehaviour
         if (score >= 137438953472) //128go
         {
             scoreDisplay = "100% !";
+            score = 137438953472;
         }
         else
         {
@@ -208,7 +214,7 @@ public class scrClickerManager : MonoBehaviour
         scoreText.text =
             "Range : " + range.ToString() +
             "\nNext level : " + costRange.ToString("N0") + " o " +
-            "\n\nPrecision : " + precisionDisplay.ToString("F2") + " degrés" +
+            "\n\nPrecision : " + precisionDisplay.ToString("F2") + " degrees" +
             "\nNext level : " + costPrecision.ToString("N0") + " o " +
             "\n\nCooldown : " + cdAutoMouse.ToString("F2") + "s " +
             "\nNext level : " + costAutoMouse.ToString("N0") + " o " +
