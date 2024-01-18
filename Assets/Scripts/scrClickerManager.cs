@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.Burst.CompilerServices;
+using UnityEngine.SceneManagement;
 
 public class scrClickerManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class scrClickerManager : MonoBehaviour
     public scrCanon scriptCanon;
     public SpriteRenderer spriteRendererAutoclick;
     public SpriteRenderer spriteRendererPrecision;
+    public SpriteRenderer spriteRendererRange;
     private bool popUpActivate = false;
     public GameObject popupPrefab;
     public GameObject squareSelection;
@@ -146,12 +148,17 @@ public class scrClickerManager : MonoBehaviour
 
     public void Range()
     {
-        if (score >= (ulong)costRange)
+        if (score >= (ulong)costRange && range < 15f)
         {
             score -= (ulong)costRange;
             costRange *= 1.1f;
             range *= 1.01f;
             DisplayScore();
+        }
+        if (range >= 15f)
+        {
+            range = 15f;
+            spriteRendererRange.color = Color.gray;
         }
     } // augmentation de la poussée initiale des mouses
 
@@ -203,8 +210,9 @@ public class scrClickerManager : MonoBehaviour
         string scoreDisplay;
         if (score >= 137438953472) //128go
         {
-            scoreDisplay = "100% !";
+            scoreDisplay = "100% !!!!!!!!!";
             score = 137438953472;
+            Invoke("LoadSceneWin", 8f);
         }
         else
         {
@@ -237,4 +245,10 @@ public class scrClickerManager : MonoBehaviour
         audioSource.volume = 0.2f;
         audioSource.PlayOneShot(soundClick);
     }
+
+    public void LoadSceneWin()
+    {
+        SceneManager.LoadScene("Win");
+    }
+
 }

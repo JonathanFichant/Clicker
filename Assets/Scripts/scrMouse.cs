@@ -31,7 +31,6 @@ public class scrMouse : MonoBehaviour
    public void SetDirectionAndSpeed(Vector2 direction, float speed)
     {
         rbMouse.velocity = direction * speed;
-       
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -43,7 +42,6 @@ public class scrMouse : MonoBehaviour
             {
                 animator.Play("Bounce", 0, 0f);
             }
-
 
             if (other.gameObject.CompareTag("Target") || other.gameObject.CompareTag("Antivirus"))
             {
@@ -58,7 +56,7 @@ public class scrMouse : MonoBehaviour
                 }
                 else if (other.name.Contains("Pop-up"))
                 {
-                    forceSquare = -10;
+                    forceSquare = -1024;
                 }
                 // vérifier quelle type de cible, selon la cible appliquer un multiplicateur à la force
                 scriptClickerManager.Square(scriptClickerManager.forceMouse * forceSquare);
